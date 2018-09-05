@@ -10,8 +10,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.google.gson.Gson
 import id.riotfallen.footballpocket.R
-import id.riotfallen.footballpocket.adapter.HomeEventListAdapter
-import id.riotfallen.footballpocket.adapter.HomePlayerListAdapter
+import id.riotfallen.footballpocket.adapter.recycler.home.HomeEventListAdapter
+import id.riotfallen.footballpocket.adapter.recycler.home.HomePlayerListAdapter
 import id.riotfallen.footballpocket.api.ApiRepository
 import id.riotfallen.footballpocket.model.event.Event
 import id.riotfallen.footballpocket.model.league.League
@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.selector
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         EventView, LeaguesView, PlayersView {
@@ -90,6 +91,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.menu_event -> {
 
+            }
+
+            R.id.menu_change_team -> {
+                startActivity<FavoriteTeamSelectorActivity>()
             }
         }
 
@@ -171,5 +176,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mainRecyclerViewFavoritePlayer.visible()
     }
 
+    override fun onResume() {
+        super.onResume()
 
+        teamId = PrefConfig(this).readIdTeam()
+        playerPresenter.getTeamPlayers(teamId)
+    }
 }
