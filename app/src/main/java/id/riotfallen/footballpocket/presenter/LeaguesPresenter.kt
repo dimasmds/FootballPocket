@@ -26,4 +26,17 @@ class LeaguesPresenter(private val view: LeaguesView,
             view.showLeagues(data.await().leagues)
         }
     }
+
+
+    fun getDetailLeagues(leagueId: String){
+        async(contextPool.main){
+            val data = bg {
+                gson.fromJson(apiRepository
+                        .doRequest(TheSportDBApi.getDetailLeague(leagueId)),
+                        LeagueResponse::class.java)
+            }
+
+            view.showDetailLeague(data.await().leagues)
+        }
+    }
 }

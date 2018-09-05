@@ -21,17 +21,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"/>
         </android.support.design.widget.AppBarLayout>
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingRight="20dp"
                 android:paddingLeft="20dp"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:id="@+id/mainActivityLinearLayoutLeaguePicker"
                     android:paddingTop="3dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -43,11 +44,12 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginBottom="3dp"
-                        android:src="@drawable/ic_football"/>
+                        android:src="@drawable/ic_football"
+                        android:contentDescription="@string/icon" />
                     <TextView
-                        android:text="English Premier League"
+                        android:id="@+id/mainActivityTextViewLeague"
                         android:fontFamily="@font/baloo_tammudu"
                         android:textColor="@color/colorTextOnSecondary"
                         android:layout_height="wrap_content"
@@ -56,7 +58,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="30dp">
                     <TextView
                         android:id="@+id/mainActivityTextNextEvent"
@@ -64,7 +65,7 @@
                         android:fontFamily="@font/baloo_tammudu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"/>
+                        android:layout_marginBottom="10dp"/>
                     <ProgressBar
                         android:id="@+id/mainProgressBarNextEvent"
                         android:layout_below="@id/mainActivityTextNextEvent"
@@ -78,8 +79,32 @@
                         android:layout_height="wrap_content"
                         android:visibility="invisible"/>
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+                    <TextView
+                        android:id="@+id/mainActivityTextFavoritePlayer"
+                        android:text="@string/your_favorite_team_player"
+                        android:fontFamily="@font/baloo_tammudu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"/>
+                    <ProgressBar
+                        android:id="@+id/mainProgressBarFavoritePlayer"
+                        android:layout_below="@id/mainActivityTextFavoritePlayer"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/mainRecyclerViewFavoritePlayer"
+                        android:layout_below="@id/mainActivityTextFavoritePlayer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

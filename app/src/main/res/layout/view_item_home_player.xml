@@ -6,20 +6,19 @@
     android:paddingBottom="20dp"
     android:paddingRight="22dp"
     android:paddingLeft="22dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_shadow">
     <ImageView
         android:id="@+id/vihpImageViewPlayer"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#000"/>
+        android:layout_height="80dp"/>
     <TextView
         android:id="@+id/vihpTextViewNamePlayer"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/vihpImageViewPlayer"
-        android:text="Aaron Ramsey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"/>
@@ -27,7 +26,6 @@
         android:id="@+id/vihpTextViewPositionPlayer"
         android:layout_below="@id/vihpTextViewNamePlayer"
         android:layout_centerHorizontal="true"
-        android:text="MidFielder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

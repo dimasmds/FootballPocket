@@ -13,4 +13,9 @@
     <string name="pref_file">id.riotfallen.footballpocket.preference_file</string>
     <string name="pref_id_league">id.riotfallen.footballpocket.preference_id_league</string>
     <string name="pref_id_team">id.riotfallen.footballpocket.preference_id_team</string>
+
+
+    <string name="english_premier_league">English Premier League</string>
+    <string name="icon">icon</string>
+    <string name="your_favorite_team_player">Your favorite team player</string>
 </resources>

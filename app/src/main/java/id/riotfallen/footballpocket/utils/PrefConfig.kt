@@ -14,7 +14,7 @@ class PrefConfig(val contex : Context,
         editor.apply()
     }
 
-    fun readIdLeague() : String = sharedPreferences.getString(contex.getString(R.string.pref_id_league), "0")
+    fun readIdLeague() : String = sharedPreferences.getString(contex.getString(R.string.pref_id_league), "4328")
 
     fun writeIdTeam(id: String){
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -22,5 +22,5 @@ class PrefConfig(val contex : Context,
         editor.apply()
     }
 
-    fun readIdTeam() : String = sharedPreferences.getString(contex.getString(R.string.pref_id_team), "0")
+    fun readIdTeam() : String = sharedPreferences.getString(contex.getString(R.string.pref_id_team), "133610")
 }

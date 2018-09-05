@@ -5,28 +5,46 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.google.gson.Gson
 import id.riotfallen.footballpocket.R
 import id.riotfallen.footballpocket.adapter.HomeEventListAdapter
+import id.riotfallen.footballpocket.adapter.HomePlayerListAdapter
 import id.riotfallen.footballpocket.api.ApiRepository
 import id.riotfallen.footballpocket.model.event.Event
+import id.riotfallen.footballpocket.model.league.League
+import id.riotfallen.footballpocket.model.player.Player
 import id.riotfallen.footballpocket.presenter.EventsPresenter
+import id.riotfallen.footballpocket.presenter.LeaguesPresenter
+import id.riotfallen.footballpocket.presenter.PlayerPresenter
+import id.riotfallen.footballpocket.utils.PrefConfig
 import id.riotfallen.footballpocket.utils.invisible
 import id.riotfallen.footballpocket.utils.visible
 import id.riotfallen.footballpocket.view.EventView
+import id.riotfallen.footballpocket.view.LeaguesView
+import id.riotfallen.footballpocket.view.PlayersView
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.ctx
+import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.selector
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        EventView {
+        EventView, LeaguesView, PlayersView {
+
+
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-
     private lateinit var leagueId: String
-    private lateinit var presenter: EventsPresenter
-
+    private lateinit var teamId: String
+    private lateinit var leaguePresenter: LeaguesPresenter
+    private lateinit var playerPresenter: PlayerPresenter
     private lateinit var homeEventListAdapter: HomeEventListAdapter
+    private lateinit var homePlayerListAdapter: HomePlayerListAdapter
+
+    private lateinit var request: ApiRepository
+    private lateinit var gson: Gson
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,13 +66,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         actionBarDrawerToggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        leagueId = "4328"
+        leagueId = PrefConfig(this).readIdLeague()
+        teamId = PrefConfig(this).readIdTeam()
 
-        val request = ApiRepository()
-        val gson = Gson()
+        request = ApiRepository()
+        gson = Gson()
 
-        presenter = EventsPresenter(this, request, gson)
-        presenter.getNextEventList(leagueId)
+        leaguePresenter = LeaguesPresenter(this, request, gson)
+        leaguePresenter.getDetailLeagues(leagueId)
+
+        playerPresenter = PlayerPresenter(this, request, gson)
+        playerPresenter.getTeamPlayers(teamId)
+
 
     }
 
@@ -97,4 +120,56 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         homeEventListAdapter = HomeEventListAdapter(this, data as MutableList<Event>)
         mainRecyclerViewNextEvent.adapter = homeEventListAdapter
     }
+
+    override fun showPlayerData(data: List<Player>) {
+        val layoutManager = GridLayoutManager(this, 3)
+        mainRecyclerViewFavoritePlayer.layoutManager = layoutManager
+        mainRecyclerViewFavoritePlayer.itemAnimator = DefaultItemAnimator()
+        homePlayerListAdapter = HomePlayerListAdapter(this, data as MutableList<Player>)
+        mainRecyclerViewFavoritePlayer.adapter = homePlayerListAdapter
+        mainRecyclerViewFavoritePlayer.isNestedScrollingEnabled = false
+    }
+
+    override fun showLeagues(data: List<League>) {
+        val leagues: MutableList<String> = arrayListOf()
+        for (index in data.indices){
+            if (index == 22){
+                break
+            }
+            data[index].strLeague?.let { leagues.add(it) }
+        }
+
+        mainActivityLinearLayoutLeaguePicker.onClick {
+            ctx.selector("Select your favorite football club", leagues) { _, i ->
+                data[i].idLeague?.let { it1 -> PrefConfig(this@MainActivity).writeIdLeague(it1) }
+                leagueId = PrefConfig(this@MainActivity).readIdLeague()
+                leaguePresenter.getDetailLeagues(leagueId)
+            }
+        }
+    }
+
+
+
+
+    override fun showDetailLeague(data: List<League>) {
+        mainActivityTextViewLeague.text = data[0].strLeague
+
+        val eventPresenter = EventsPresenter(this, request, gson)
+        eventPresenter.getNextEventList(leagueId)
+
+        leaguePresenter.getLeagues()
+    }
+
+
+    override fun showPlayerLoading() {
+        mainProgressBarFavoritePlayer.visible()
+        mainRecyclerViewFavoritePlayer.invisible()
+    }
+
+    override fun hidePlayerLoading() {
+        mainProgressBarFavoritePlayer.invisible()
+        mainRecyclerViewFavoritePlayer.visible()
+    }
+
+
 }

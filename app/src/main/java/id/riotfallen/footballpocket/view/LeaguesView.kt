@@ -4,4 +4,5 @@ import id.riotfallen.footballpocket.model.league.League
 
 interface LeaguesView {
     fun showLeagues(data: List<League>)
+    fun showDetailLeague(data: List<League>)
 }
