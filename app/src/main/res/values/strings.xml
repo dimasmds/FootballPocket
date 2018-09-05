@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Football Pocket</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="event_list">Event List</string>
+    <string name="team_list">Team List</string>
+    <string name="next_event">Next Event</string>
+    <string name="football">Football</string>
+    <string name="sunday_august_20_2018">Sunday, August 20 2018</string>
+
+
+    <string name="pref_file">id.riotfallen.footballpocket.preference_file</string>
+    <string name="pref_id_league">id.riotfallen.footballpocket.preference_id_league</string>
+    <string name="pref_id_team">id.riotfallen.footballpocket.preference_id_team</string>
+</resources>
