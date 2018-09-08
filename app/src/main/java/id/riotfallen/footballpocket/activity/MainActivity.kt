@@ -10,23 +10,30 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.google.gson.Gson
 import id.riotfallen.footballpocket.R
+import id.riotfallen.footballpocket.adapter.recycler.event.FavoriteListAdapter
 import id.riotfallen.footballpocket.adapter.recycler.home.HomeEventListAdapter
+import id.riotfallen.footballpocket.adapter.recycler.home.HomeFavoriteEventListAdapter
 import id.riotfallen.footballpocket.adapter.recycler.home.HomePlayerListAdapter
 import id.riotfallen.footballpocket.api.ApiRepository
+import id.riotfallen.footballpocket.db.database
 import id.riotfallen.footballpocket.model.event.Event
+import id.riotfallen.footballpocket.model.favorite.Favorite
 import id.riotfallen.footballpocket.model.league.League
 import id.riotfallen.footballpocket.model.player.Player
 import id.riotfallen.footballpocket.presenter.EventsPresenter
 import id.riotfallen.footballpocket.presenter.LeaguesPresenter
 import id.riotfallen.footballpocket.presenter.PlayerPresenter
 import id.riotfallen.footballpocket.utils.PrefConfig
+import id.riotfallen.footballpocket.utils.gone
 import id.riotfallen.footballpocket.utils.invisible
 import id.riotfallen.footballpocket.utils.visible
 import id.riotfallen.footballpocket.view.EventView
 import id.riotfallen.footballpocket.view.LeaguesView
 import id.riotfallen.footballpocket.view.PlayersView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.selects.select
 import org.jetbrains.anko.ctx
+import org.jetbrains.anko.db.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.startActivity
@@ -43,10 +50,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var playerPresenter: PlayerPresenter
     private lateinit var homeEventListAdapter: HomeEventListAdapter
     private lateinit var homePlayerListAdapter: HomePlayerListAdapter
+    private lateinit var favoriteEventListAdapter: HomeFavoriteEventListAdapter
 
     private lateinit var request: ApiRepository
     private lateinit var gson: Gson
 
+    private var favorites: MutableList<Favorite> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +88,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         playerPresenter = PlayerPresenter(this, request, gson)
         playerPresenter.getTeamPlayers(teamId)
 
+        createLocalDb()
+    }
 
+    private fun createLocalDb() {
+        database.use {
+            createTable("TABLE_FAVORITE", true,
+                    "ID_" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                    "TEAM_ID" to TEXT + UNIQUE,
+                    "TEAM_NAME" to TEXT,
+                    "TEAM_BADGE" to TEXT)
+        }
+
+        loadFavoriteEvent()
+    }
+
+    private fun loadFavoriteEvent() {
+        favorites.clear()
+        database?.use {
+            val result = select(Favorite.TABLE_FAVORITE)
+            val favorite = result.parseList(classParser<Favorite>())
+            favorites.addAll(favorite)
+            if (favorite.isNotEmpty())
+                showFavoriteEvent()
+            else
+                mainActivityRelativeLayoutFavorite.gone()
+        }
+    }
+
+    private fun showFavoriteEvent() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        mainRecyclerViewFavoriteEvent.layoutManager = layoutManager
+        mainRecyclerViewFavoriteEvent.itemAnimator = DefaultItemAnimator()
+        favoriteEventListAdapter = HomeFavoriteEventListAdapter(this, favorites)
+        mainRecyclerViewFavoriteEvent.adapter = favoriteEventListAdapter
+        mainActivityRelativeLayoutFavorite.visible()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -90,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.menu_event -> {
-
+                startActivity<EventActivity>()
             }
 
             R.id.menu_change_team -> {
@@ -181,5 +224,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         teamId = PrefConfig(this).readIdTeam()
         playerPresenter.getTeamPlayers(teamId)
+        loadFavoriteEvent()
     }
 }
