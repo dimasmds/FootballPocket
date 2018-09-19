@@ -43,8 +43,6 @@ import org.jetbrains.anko.startActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         EventView, LeaguesView, PlayersView, TeamView {
 
-
-
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var leagueId: String
     private lateinit var teamId: String
