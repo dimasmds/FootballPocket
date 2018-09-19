@@ -5,7 +5,5 @@
             android:title="@string/event_list"/>
         <item android:id="@+id/menu_team"
             android:title="@string/team_list"/>
-        <item android:id="@+id/menu_change_team"
-            android:title="@string/change_team_favorite" />
     </group>
 </menu>

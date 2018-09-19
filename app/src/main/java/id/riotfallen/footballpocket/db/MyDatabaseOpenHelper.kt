@@ -2,7 +2,8 @@ package id.riotfallen.footballpocket.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import id.riotfallen.footballpocket.model.favorite.Favorite
+import id.riotfallen.footballpocket.model.favorite.FavoriteEvent
+import id.riotfallen.footballpocket.model.favorite.FavoriteTeam
 import org.jetbrains.anko.db.*
 
 class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "FavoriteEvent.db", null, 1) {
@@ -22,20 +23,26 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "Favorit
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.createTable(Favorite.TABLE_FAVORITE, true,
-                Favorite.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-                Favorite.EVENT_ID to TEXT + UNIQUE,
-                Favorite.EVENT_DATE to TEXT,
-                Favorite.HOME_ID to TEXT,
-                Favorite.HOME_NAME to TEXT,
-                Favorite.HOME_SCORE to INTEGER,
-                Favorite.AWAY_ID to TEXT,
-                Favorite.AWAY_NAME to TEXT,
-                Favorite.AWAY_SCORE to INTEGER)
+        db.createTable(FavoriteEvent.TABLE_FAVORITE_EVENT, true,
+                FavoriteEvent.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                FavoriteEvent.EVENT_ID to TEXT + UNIQUE,
+                FavoriteEvent.EVENT_DATE to TEXT,
+                FavoriteEvent.HOME_ID to TEXT,
+                FavoriteEvent.HOME_NAME to TEXT,
+                FavoriteEvent.HOME_SCORE to INTEGER,
+                FavoriteEvent.AWAY_ID to TEXT,
+                FavoriteEvent.AWAY_NAME to TEXT,
+                FavoriteEvent.AWAY_SCORE to INTEGER)
+
+        db.createTable(FavoriteTeam.TABLE_FAVORITE_TEAM, true,
+                FavoriteTeam.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                FavoriteTeam.TEAM_ID to TEXT + UNIQUE,
+                FavoriteTeam.TEAM_NAME to TEXT,
+                FavoriteTeam.TEAM_BADGE to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.dropTable(Favorite.TABLE_FAVORITE, true)
+        db.dropTable(FavoriteEvent.TABLE_FAVORITE_EVENT, true)
     }
 }
 

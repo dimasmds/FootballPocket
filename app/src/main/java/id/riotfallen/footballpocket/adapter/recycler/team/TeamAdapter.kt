@@ -1,7 +1,7 @@
-package id.riotfallen.footballpocket.adapter.recycler
+package id.riotfallen.footballpocket.adapter.recycler.team
 
-import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -9,23 +9,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import id.riotfallen.footballpocket.R
+import id.riotfallen.footballpocket.activity.TeamDetailActivity
 import id.riotfallen.footballpocket.model.team.Team
 import org.jetbrains.anko.*
-import id.riotfallen.footballpocket.R
-import id.riotfallen.footballpocket.utils.PrefConfig
 
 class TeamsAdapter (private val context: Context?, private val teams : List<Team>) : RecyclerView.Adapter<TeamViewHolder>() {
 
-    override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        holder.bindItem(teams[position])
-        holder.itemView.setOnClickListener { it ->
-            context?.alert("Make ${teams[position].strTeam} your favorite team?") {
-                yesButton {
-                    teams[position].idTeam?.let { it1 -> PrefConfig(context).writeIdTeam(it1) }
-                    (context as Activity).onBackPressed()
-                }
-                noButton {  context.toast("ok then you cancelled!") }
-            }?.show()
+    override fun onBindViewHolder(holderSelectorFavorite: TeamViewHolder, position: Int) {
+        holderSelectorFavorite.bindItem(teams[position])
+        holderSelectorFavorite.itemView.setOnClickListener {
+            context?.startActivity<TeamDetailActivity>("teamId" to teams[position].idTeam)
         }
     }
 
@@ -54,6 +48,7 @@ class TeamsAdapter (private val context: Context?, private val teams : List<Team
                     textView {
                         id = R.id.team_name
                         textSize = 16f
+                        textColor = Color.BLACK
                     }.lparams{
                         margin = dip(15)
                     }

@@ -3,6 +3,7 @@ package id.riotfallen.footballpocket.activity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -15,6 +16,7 @@ import id.riotfallen.footballpocket.model.league.League
 import id.riotfallen.footballpocket.presenter.LeaguesPresenter
 import id.riotfallen.footballpocket.view.LeaguesView
 import kotlinx.android.synthetic.main.activity_event.*
+import org.jetbrains.anko.startActivity
 
 class EventActivity : AppCompatActivity(), LeaguesView {
 
@@ -84,10 +86,15 @@ class EventActivity : AppCompatActivity(), LeaguesView {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_button_search, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             android.R.id.home -> onBackPressed()
+            R.id.menu_button_search -> startActivity<EventSearchActivity>()
         }
 
         return super.onOptionsItemSelected(item)

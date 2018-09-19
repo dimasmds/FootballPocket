@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="220dp"
     android:paddingTop="10dp"
     android:paddingBottom="15dp"
@@ -23,14 +24,15 @@
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            tools:ignore="RelativeOverlap,UseCompoundDrawables">
             <ImageView
                 android:id="@+id/viheImageViewHome"
                 android:layout_width="30dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp"
+                android:contentDescription="@string/badge" />
             <TextView
                 android:id="@+id/viheTextViewHome"
-                android:text="AST"
                 android:maxLength="3"
                 android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
@@ -40,19 +42,18 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            tools:ignore="RelativeOverlap">
             <TextView
-                android:text="V"
                 android:id="@+id/viheTextViewScoreHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:text=" - "
+                android:text="@string/space_strip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/viheTextViewScoreAway"
-                android:text="S"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -60,18 +61,19 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            tools:ignore="RelativeOverlap,UseCompoundDrawables">
             <TextView
                 android:id="@+id/viheTextViewAway"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:maxLength="3"
-                android:text="ARS"/>
+                android:maxLength="3" />
             <ImageView
                 android:id="@+id/viheImageViewAway"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:contentDescription="@string/badge" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

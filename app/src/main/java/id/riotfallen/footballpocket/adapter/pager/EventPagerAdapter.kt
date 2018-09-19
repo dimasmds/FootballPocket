@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import id.riotfallen.footballpocket.fragment.EventFragment
+import id.riotfallen.footballpocket.fragment.event.EventFragment
 
 class EventPagerAdapter (fm: FragmentManager?,
                          private val noOfTabs: Int,

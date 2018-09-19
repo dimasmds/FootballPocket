@@ -9,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import id.riotfallen.footballpocket.R
 import id.riotfallen.footballpocket.activity.EventDetailActivity
-import id.riotfallen.footballpocket.model.favorite.Favorite
+import id.riotfallen.footballpocket.model.favorite.FavoriteEvent
 import id.riotfallen.footballpocket.utils.BadgeFetcher
 import id.riotfallen.footballpocket.utils.StringTools
 import org.jetbrains.anko.startActivity
 
 class HomeFavoriteEventListAdapter(private val context: Context?,
-                           private val favorites: MutableList<Favorite>)
+                                   private val favoriteEvents: MutableList<FavoriteEvent>)
     : RecyclerView.Adapter<HomeFavoriteEventListViewHolder>() {
 
 
@@ -24,13 +24,13 @@ class HomeFavoriteEventListAdapter(private val context: Context?,
                 .inflate(R.layout.view_item_home_event, parent, false))
     }
 
-    override fun getItemCount(): Int = favorites.size
+    override fun getItemCount(): Int = favoriteEvents.size
 
     override fun onBindViewHolder(holder: HomeFavoriteEventListViewHolder, position: Int) {
-        holder.bindItem(favorites[position])
+        holder.bindItem(favoriteEvents[position])
         holder.itemView.setOnClickListener {
-            context?.startActivity<EventDetailActivity>("idEvent" to favorites[position].eventId,
-                    "idHome" to favorites[position].homeId, "idAway" to favorites[position].awayId)
+            context?.startActivity<EventDetailActivity>("idEvent" to favoriteEvents[position].eventId,
+                    "idHome" to favoriteEvents[position].homeId, "idAway" to favoriteEvents[position].awayId)
         }
     }
 }
@@ -48,8 +48,8 @@ class HomeFavoriteEventListViewHolder(view: View) : RecyclerView.ViewHolder(view
     private val textViewAwayName: TextView = view.findViewById(R.id.viheTextViewAway)
     private val textViewAwayScore: TextView = view.findViewById(R.id.viheTextViewScoreAway)
 
-    fun bindItem(event: Favorite){
-        textViewDate.text = StringTools().DateToString(event.eventDate)
+    fun bindItem(event: FavoriteEvent) {
+        textViewDate.text = StringTools().dateToString(event.eventDate)
 
         textViewHomeName.text = event.homeName?.toUpperCase() ?: ""
         textViewHomeScore.text = if(event.homeScore != null) event.homeScore.toString() else "V"

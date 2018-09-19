@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import id.riotfallen.footballpocket.R
 
-class PrefConfig(val contex : Context,
-                 val sharedPreferences: SharedPreferences = contex.getSharedPreferences(contex.getString(R.string.pref_file),
+class PrefConfig(private val contex: Context,
+                 private val sharedPreferences: SharedPreferences = contex.getSharedPreferences(contex.getString(R.string.pref_file),
                          Context.MODE_PRIVATE)) {
 
     fun writeIdLeague(id: String){

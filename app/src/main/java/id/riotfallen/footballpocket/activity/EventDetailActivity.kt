@@ -1,9 +1,9 @@
 package id.riotfallen.footballpocket.activity
 
 import android.database.sqlite.SQLiteConstraintException
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.google.gson.Gson
@@ -11,7 +11,7 @@ import id.riotfallen.footballpocket.R
 import id.riotfallen.footballpocket.api.ApiRepository
 import id.riotfallen.footballpocket.db.database
 import id.riotfallen.footballpocket.model.event.Event
-import id.riotfallen.footballpocket.model.favorite.Favorite
+import id.riotfallen.footballpocket.model.favorite.FavoriteEvent
 import id.riotfallen.footballpocket.presenter.EventDetailPresenter
 import id.riotfallen.footballpocket.utils.BadgeFetcher
 import id.riotfallen.footballpocket.utils.invisible
@@ -96,7 +96,7 @@ class EventDetailActivity : AppCompatActivity(), EventView {
     private fun removeFromFavorite() {
         try {
             database.use {
-                delete(Favorite.TABLE_FAVORITE,
+                delete(FavoriteEvent.TABLE_FAVORITE_EVENT,
                         "(EVENT_ID = {id})",
                         "id" to idEvent)
             }
@@ -109,15 +109,15 @@ class EventDetailActivity : AppCompatActivity(), EventView {
     private fun addToFavorite() {
         try {
             database.use {
-                insert(Favorite.TABLE_FAVORITE,
-                        Favorite.EVENT_ID to idEvent,
-                        Favorite.EVENT_DATE to event.dateEvent,
-                        Favorite.HOME_ID to idHome,
-                        Favorite.HOME_NAME to event.strHomeTeam,
-                        Favorite.HOME_SCORE to event.intHomeScore,
-                        Favorite.AWAY_ID to idAway,
-                        Favorite.AWAY_NAME to event.strAwayTeam,
-                        Favorite.AWAY_SCORE to event.intAwayScore
+                insert(FavoriteEvent.TABLE_FAVORITE_EVENT,
+                        FavoriteEvent.EVENT_ID to idEvent,
+                        FavoriteEvent.EVENT_DATE to event.dateEvent,
+                        FavoriteEvent.HOME_ID to idHome,
+                        FavoriteEvent.HOME_NAME to event.strHomeTeam,
+                        FavoriteEvent.HOME_SCORE to event.intHomeScore,
+                        FavoriteEvent.AWAY_ID to idAway,
+                        FavoriteEvent.AWAY_NAME to event.strAwayTeam,
+                        FavoriteEvent.AWAY_SCORE to event.intAwayScore
                 )
             }
             toast("Added to Favorites")
@@ -128,25 +128,25 @@ class EventDetailActivity : AppCompatActivity(), EventView {
 
     private fun favoriteState(){
         database.use {
-            val result = select(Favorite.TABLE_FAVORITE)
+            val result = select(FavoriteEvent.TABLE_FAVORITE_EVENT)
                     .whereArgs("(EVENT_ID = {id})",
                             "id" to idEvent)
-            val favorite = result.parseList(classParser<Favorite>())
+            val favorite = result.parseList(classParser<FavoriteEvent>())
             if(!favorite.isEmpty()) isFavorite = true
         }
     }
 
-    override fun showLoading() {
+    override fun showEventLoading() {
         progressbarEventDetail.visible()
         scrollViewEventDetail.invisible()
     }
 
-    override fun hideLoading() {
+    override fun hideEventLoading() {
         progressbarEventDetail.invisible()
         scrollViewEventDetail.visible()
     }
 
-    override fun showEvent(data: List<Event>) {
+    override fun showEventData(data: MutableList<Event>) {
         event = data[0]
 
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

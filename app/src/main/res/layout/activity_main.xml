@@ -112,6 +112,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/mainActivityLinearLayoutTeamPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_league_picker"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/mainActivityTextViewTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/baloo_tammudu"
+                            android:textColor="@color/colorTextOnSecondary" />
+                    </LinearLayout>
                     <ProgressBar
                         android:id="@+id/mainProgressBarFavoritePlayer"
                         android:layout_below="@id/mainActivityTextFavoritePlayer"
@@ -121,6 +142,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/mainRecyclerViewFavoritePlayer"
                         android:layout_below="@id/mainActivityTextFavoritePlayer"
+                        android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"/>

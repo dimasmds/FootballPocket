@@ -12,15 +12,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import id.riotfallen.footballpocket.R
 import id.riotfallen.footballpocket.activity.EventDetailActivity
-import id.riotfallen.footballpocket.model.favorite.Favorite
+import id.riotfallen.footballpocket.model.favorite.FavoriteEvent
 import id.riotfallen.footballpocket.utils.BadgeFetcher
-import id.riotfallen.footballpocket.utils.invisible
 import id.riotfallen.footballpocket.utils.visible
 import org.jetbrains.anko.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FavoriteListAdapter(private val context: Context?, private val events: MutableList<Favorite>) :
+class FavoriteListAdapter(private val context: Context?, private val events: MutableList<FavoriteEvent>) :
         RecyclerView.Adapter<FavoriteListViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteListViewHolder {
@@ -55,7 +54,7 @@ class FavoriteListViewHolder(view : View) : RecyclerView.ViewHolder(view) {
     private val textViewDate : TextView = view.findViewById(R.id.textViewDateMatch)
 
     @SuppressLint("SimpleDateFormat")
-    fun bindItem(match : Favorite) {
+    fun bindItem(match: FavoriteEvent) {
 
         textViewHomeName.text = match.homeName
         if (match.homeScore != null){
@@ -96,12 +95,7 @@ class FavoriteListViewHolder(view : View) : RecyclerView.ViewHolder(view) {
             intent.putExtra(CalendarContract.Events.TITLE, match.homeName + " VS " + match.awayName)
             intent.putExtra(CalendarContract.Events.DESCRIPTION, match.homeName + " VS " + match.awayName)
 
-            imageViewNotif.setOnClickListener(object : View.OnClickListener{
-                override fun onClick(p0: View?) {
-                    itemView.context.startActivity(intent)
-                }
-
-            })
+            imageViewNotif.setOnClickListener { itemView.context.startActivity(intent) }
         }
     }
 

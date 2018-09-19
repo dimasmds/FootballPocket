@@ -5,11 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.google.gson.Gson
 import id.riotfallen.footballpocket.R
-import id.riotfallen.footballpocket.adapter.recycler.TeamsAdapter
+import id.riotfallen.footballpocket.adapter.recycler.selector.TeamsSelectorAdapter
 import id.riotfallen.footballpocket.api.ApiRepository
 import id.riotfallen.footballpocket.model.league.League
 import id.riotfallen.footballpocket.model.team.Team
@@ -20,8 +21,7 @@ import id.riotfallen.footballpocket.utils.visible
 import id.riotfallen.footballpocket.view.LeaguesView
 import id.riotfallen.footballpocket.view.TeamView
 import kotlinx.android.synthetic.main.activity_favorite_team_selector.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk25.coroutines.onItemSelectedListener
+
 
 class FavoriteTeamSelectorActivity : AppCompatActivity(), LeaguesView, TeamView{
 
@@ -32,7 +32,7 @@ class FavoriteTeamSelectorActivity : AppCompatActivity(), LeaguesView, TeamView{
 
     private lateinit var leagueId: String
 
-    private lateinit var adapter: TeamsAdapter
+    private lateinit var adapter: TeamsSelectorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +40,8 @@ class FavoriteTeamSelectorActivity : AppCompatActivity(), LeaguesView, TeamView{
         setSupportActionBar(favoriteTeamSelectorToolbar)
         supportActionBar?.title = "Select a favorite team"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        setWindowParams()
 
         apiRepository = ApiRepository()
         gson = Gson()
@@ -75,7 +77,7 @@ class FavoriteTeamSelectorActivity : AppCompatActivity(), LeaguesView, TeamView{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 leagueId = data[favoriteTeamSelectorSpinner.selectedItemPosition].idLeague.toString()
                 val teamPresenter = TeamPresenter(this@FavoriteTeamSelectorActivity, apiRepository, gson)
-                teamPresenter.getClubs(leagueId)
+                teamPresenter.getTeams(leagueId)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -98,9 +100,17 @@ class FavoriteTeamSelectorActivity : AppCompatActivity(), LeaguesView, TeamView{
     }
 
     override fun showTeamData(data: List<Team>) {
-        adapter = TeamsAdapter(this, data)
+        adapter = TeamsSelectorAdapter(this, data)
         val layoutManager = GridLayoutManager(this, 1)
         favoriteTeamSelectorRecyclerView.layoutManager = layoutManager
         favoriteTeamSelectorRecyclerView.adapter = adapter
+    }
+
+    private fun setWindowParams() {
+        val wlp = window.attributes
+        wlp.dimAmount = 0.5f
+        wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        window.attributes = wlp
     }
 }

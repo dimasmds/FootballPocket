@@ -16,14 +16,14 @@
             android:layout_height="?android:attr/actionBarSize"
             android:layout_width="match_parent" />
         <TextView
-            android:layout_marginLeft="18dp"
-            android:text="SELECT LEAGUE"
+            android:layout_marginStart="18dp"
+            android:text="@string/select_league"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap"/>
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/eventActivitySpinner"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap"/>

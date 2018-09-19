@@ -20,9 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FavoriteTeamSelectorActivity" />
+        <activity
+            android:name=".activity.FavoriteTeamSelectorActivity"
+            android:theme="@style/TeamPickerTheme" />
         <activity android:name=".activity.EventActivity" />
-        <activity android:name=".activity.EventDetailActivity"></activity>
+        <activity android:name=".activity.EventDetailActivity" />
+        <activity android:name=".activity.PlayerDetailActivity" />
+        <activity android:name=".activity.EventSearchActivity" />
+        <activity android:name=".activity.TeamActivity" />
+        <activity android:name=".activity.TeamDetailActivity" />
+        <activity android:name=".activity.TeamSearchActivity"></activity>
     </application>
 
 </manifest>
